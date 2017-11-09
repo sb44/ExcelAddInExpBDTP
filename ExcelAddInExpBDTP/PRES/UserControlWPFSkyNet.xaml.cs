@@ -23,8 +23,8 @@ namespace ExcelAddInExpBDTP.PRES {
     public partial class UserControlWPFSkyNet : UserControl {
 
 
-        // SqlConnection connexion;
-        // string chaineDeConnexion = "Data Source=ServeurSQL;Initial Catalog = SkyNet;User Id = TEST;Password=AAAaaa111";
+        SqlConnection connexion = null;
+        string chaineDeConnexion = "";
 
         public UserControlWPFSkyNet() {
             InitializeComponent();
@@ -48,16 +48,12 @@ namespace ExcelAddInExpBDTP.PRES {
 
         private void lblMAJ_Unloaded(object sender, RoutedEventArgs e) {
             //déconnecté la BD
-            //      connexion.Close();
-
-            //db = null;
+           if (connexion != null)
+                connexion.Close();
         }
 
         private void lblMAJ_Loaded(object sender, RoutedEventArgs e) {
-            //connecté la bd
-            //          connexion = new SqlConnection(chaineDeConnexion);
-            //         connexion.Open();
-
+            pwdBOXMDP.Password = "AAAaaa111";
         }
 
         private void listBoxEmployes_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -67,9 +63,63 @@ namespace ExcelAddInExpBDTP.PRES {
 
         }
 
-        private void SelectNomOuVille(object sender, RoutedEventArgs e) {
+        private void SelectNomOuVille(object sender, RoutedEventArgs e) { // Bouton radio
 
         }
+
+        private void buttonConn_Click(object sender, RoutedEventArgs e) {
+            //TODO: validation...
+            if (txtAdresseIP.Text.Trim() == "") { 
+                txtAdresseIP.Background = System.Windows.Media.Brushes.Red;
+                MessageBox.Show("Erreur. Le ID doit être saisie.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                txtAdresseIP.Background = System.Windows.Media.Brushes.White;
+                return;
+            }
+            if (txtBD.Text.Trim() == "") {
+                txtBD.Background = System.Windows.Media.Brushes.Red;
+                MessageBox.Show("Erreur. La BD doit être saisie.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                txtBD.Background = System.Windows.Media.Brushes.White;
+                return;
+            }
+            if (txtUser.Text.Trim() == "") {
+                txtUser.Background = System.Windows.Media.Brushes.Red;
+                MessageBox.Show("Erreur. La BD doit être saisie.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                txtUser.Background = System.Windows.Media.Brushes.White;
+                return;
+            }
+
+            // chaineDeConnexion = "Data Source=ServeurSQL;Initial Catalog = SkyNet;User Id = TEST;Password=AAAaaa111"; 
+
+            //CHAINE POUR COLLÈGE:
+            chaineDeConnexion = @"Data Source=" + txtAdresseIP.Text.Trim() + ",1433" + 
+                                ";Initial Catalog=" + txtBD.Text.Trim() + 
+                                ";User Id=" + txtUser.Text.Trim() + 
+                                ";Password=" + pwdBOXMDP.Password.Trim();
+
+            //connecté la bd
+            try {
+                connexion = new SqlConnection(chaineDeConnexion);
+                connexion.Open();
+                buttonConn.IsEnabled = false;
+                buttonDeConn.IsEnabled = true;
+                
+                // on grossit la fenêtre:
+                Globals.ThisAddIn.WpfPaneHeight = ThisAddIn.LargePaneHeight;
+
+            } catch (Exception eMsg) { // On force l'erreur
+                connexion = null;
+                MessageBox.Show("Connexion invalide. Veuillez réessayer.\n\n" + eMsg.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void buttonDeConn_Click(object sender, RoutedEventArgs e) {
+
+            if (connexion != null)
+                connexion.Close();
+
+            Globals.ThisAddIn.QuitAddIn();
+        }
+
     }
 }
 

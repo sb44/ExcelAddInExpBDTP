@@ -13,6 +13,8 @@ namespace ExcelAddInExpBDTP {
     // Cette classe contient logique de présentation.
     public partial class ThisAddIn {
         public static string NameOfAddin = "ExcelAddInExpBDTP";
+        public static int LargePaneHeight = 525;
+        public static int SmallPaneHeight = 210;
 
         public PRES.UserControlFMSkyNet myUserControlFromFM;
 
@@ -28,8 +30,16 @@ namespace ExcelAddInExpBDTP {
 
         private int wpfPaneWidth = 780;
         //  private int wpfPaneHeight = 525; // À SETTER UNE FOIS CONNECTÉ
+        private int wpfPaneHeight = SmallPaneHeight;
+        public int WpfPaneHeight {
+            set {
+                if (value == SmallPaneHeight || value == LargePaneHeight) {
+                    wpfPaneHeight = value;
+                    myCustomTaskPaneSkyNet.Height = wpfPaneHeight;
+                }
+            }
+        }
 
-        private int wpfPaneHeight = 210;
 
         // Cette méthode va appeler : ThisAddIn_Shutdown
         internal void QuitAddIn() {

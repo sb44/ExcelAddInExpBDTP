@@ -69,6 +69,9 @@
 
             </Grid.RowDefinitions>
 
+            <Rectangle HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="753" Grid.Row="2" Grid.ColumnSpan="3" Grid.Column="1" Grid.RowSpan="2" Stroke="#FFE0E0E0"/>
+
+
             <Label x:Name="lblCalcDeRembDummyCornerRadius" Content=""
         		Grid.Column="1" 
         		Grid.Row="1"
@@ -107,19 +110,19 @@
 
 
             <!-- <ListBox x:Name="listBoxEmployes" HorizontalAlignment="Left" Height="197" Grid.RowSpan="4" VerticalAlignment="Top" Width="538" Grid.Column="1"  Grid.Row="3" Margin="5,0,0,0" Grid.ColumnSpan="2" /> -->
-            <ListBox Name="listBoxEmployes" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Grid.RowSpan="3" Width="291"  Grid.Row="4" Margin="72,36,0,84" SelectionChanged="listBoxEmployes_SelectionChanged" Grid.Column="1" Grid.ColumnSpan="2">
+            <ListBox x:Name="listBoxEmployes" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Grid.RowSpan="3" Width="291"  Grid.Row="4" Margin="72,36,0,84" SelectionChanged="listBoxEmployes_SelectionChanged" Grid.Column="1" Grid.ColumnSpan="2">
                 <ListBox.Template >
                     <ControlTemplate >
                         <DockPanel LastChildFill="True">
                             <Grid DockPanel.Dock="Top" Height="25">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100"></ColumnDefinition>
-                                    <ColumnDefinition Width="100"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0">ID Employé</Label>
-                                <Label Grid.Column="1">ID Département</Label>
-                                <Label Grid.Column="2">Nom employé</Label>
+                                <Label Grid.Column="0" Content="ID Employé"/>
+                                <Label Grid.Column="1" Content="ID Département"/>
+                                <Label Grid.Column="2" Content="Nom employé"/>
                             </Grid>
                             <ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" BorderBrush="Transparent" BorderThickness="0" >
                                 <ItemsPresenter />
@@ -184,15 +187,14 @@
             <Label x:Name="lblUser" Content="Utilisateur" FontWeight="Bold" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="2" VerticalAlignment="Top" Foreground="#FF009CE7" RenderTransformOrigin="0.6,1.077" Width="167" Margin="88,0,0,0" />
             <Label x:Name="lblPW" Content="Mot de passe" FontWeight="Bold" HorizontalAlignment="Left" Grid.Column="3" Grid.Row="2" VerticalAlignment="Top" Foreground="#FF009CE7" RenderTransformOrigin="0.6,1.077" Width="166" Margin="3,0,0,0" />
 
-            <TextBox x:Name="txtAdresseIP" Template="{StaticResource TextBoxBaseControlTemplate}" HorizontalAlignment="Stretch" Height="26" Grid.Column="1" Grid.Row="3" Margin="5,0,136,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="auto" Text="" TextAlignment="Left" Foreground="#FF5C5C66"/>
-            <TextBox x:Name="txtBD" Template="{StaticResource TextBoxBaseControlTemplate}" HorizontalAlignment="Stretch" Height="26" Grid.Column="1" Grid.Row="3" Margin="196,0,227,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="auto" Text="" TextAlignment="Left" Foreground="#FF5C5C66" Grid.ColumnSpan="2"/>
-            <TextBox x:Name="txtUser" Template="{StaticResource TextBoxBaseControlTemplate}" HorizontalAlignment="Stretch" Height="26" Grid.Column="2" Grid.Row="3" Margin="88,0,34,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="auto" Text="" TextAlignment="Left" Foreground="#FF5C5C66"/>
-            <TextBox x:Name="txtMDP" Template="{StaticResource TextBoxBaseControlTemplate}" HorizontalAlignment="Stretch" Height="26" Grid.Column="3" Grid.Row="3" Margin="3,0,7,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="auto" Text="" TextAlignment="Left" Foreground="#FF5C5C66"/>
+            <TextBox x:Name="txtAdresseIP" Template="{StaticResource TextBoxBaseControlTemplate}" HorizontalAlignment="Stretch" Height="26" Grid.Column="1" Grid.Row="3" Margin="5,0,136,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="auto" Text="127.0.0.1" TextAlignment="Left" Foreground="#FF5C5C66" />
+            <TextBox x:Name="txtBD" Template="{StaticResource TextBoxBaseControlTemplate}" HorizontalAlignment="Stretch" Height="26" Grid.Column="1" Grid.Row="3" Margin="196,0,227,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="auto" Text="SkyNet" TextAlignment="Left" Foreground="#FF5C5C66" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="txtUser" Template="{StaticResource TextBoxBaseControlTemplate}" HorizontalAlignment="Stretch" Height="26" Grid.Column="2" Grid.Row="3" Margin="88,0,34,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="auto" Text="PROG1" TextAlignment="Left" Foreground="#FF5C5C66"/>
+            <PasswordBox x:Name="pwdBOXMDP" HorizontalAlignment="Stretch" Height="26" Grid.Column="3" Grid.Row="3"  VerticalAlignment="Top" VerticalContentAlignment="Center" Width="auto"  Foreground="#FF5C5C66" Margin="0,0,5,0"/>
 
-            <Button x:Name="buttonConn" Grid.Column="1" Grid.Row="3" Content="Connexion" HorizontalAlignment="Left" VerticalAlignment="Center" Width="146" Height="25" Margin="122,69,0,10"/>
+            <Button x:Name="buttonConn" Grid.Column="1" Grid.Row="3" Content="Connexion" HorizontalAlignment="Left" VerticalAlignment="Center" Width="146" Height="25" Margin="122,69,0,10" Click="buttonConn_Click"/>
 
-            <Button x:Name="buttonDeConn" Grid.Column="2" Grid.Row="3" Content="Déconnexion" HorizontalAlignment="Left" VerticalAlignment="Center" Width="146" Height="25" Margin="170,69,0,10" Grid.ColumnSpan="2"/>
-            <Rectangle HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="753" Grid.Row="2" Grid.ColumnSpan="3" Grid.Column="1" Grid.RowSpan="2" Stroke="#FFE0E0E0"/>
+            <Button x:Name="buttonDeConn" Grid.Column="2" Grid.Row="3" Content="Déconnexion" HorizontalAlignment="Left" VerticalAlignment="Center" Width="146" Height="25" Margin="170,69,0,10" Grid.ColumnSpan="2" IsEnabled="False" Click="buttonDeConn_Click"/>
 
 
         </Grid>
