@@ -7,6 +7,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Tools.Excel;
 using Microsoft.Win32;
+using System.Windows.Forms;
 
 namespace ExcelAddInExpBDTP {
     // Cette classe contient logique de présentation.
@@ -26,7 +27,9 @@ namespace ExcelAddInExpBDTP {
         }
 
         private int wpfPaneWidth = 780;
-        private int wpfPaneHeight = 525;
+        //  private int wpfPaneHeight = 525; // À SETTER UNE FOIS CONNECTÉ
+
+        private int wpfPaneHeight = 210;
 
         // Cette méthode va appeler : ThisAddIn_Shutdown
         internal void QuitAddIn() {
@@ -49,7 +52,7 @@ namespace ExcelAddInExpBDTP {
             int width = myUserControlFromFM.Width;
             int height = myUserControlFromFM.Height;
 
-            myCustomTaskPaneSkyNet = this.CustomTaskPanes.Add(myUserControlFromFM, "SkyNet - Employés et départements");
+            myCustomTaskPaneSkyNet = this.CustomTaskPanes.Add(myUserControlFromFM, "TP4 - Base de données applicatives");
 
             myCustomTaskPaneSkyNet.DockPosition = Office.MsoCTPDockPosition.msoCTPDockPositionFloating;
             myCustomTaskPaneSkyNet.Height = height + 45;
@@ -57,7 +60,7 @@ namespace ExcelAddInExpBDTP {
 
             myCustomTaskPaneSkyNet.DockPositionRestrict = Office.MsoCTPDockPositionRestrict.msoCTPDockPositionRestrictNoChange;
 
-            // myCustomTaskPaneSkyNet.Control.SizeChanged += new EventHandler(Control_SizeChanged);
+            myCustomTaskPaneSkyNet.Control.SizeChanged += new EventHandler(Control_SizeChanged);
 
             myCustomTaskPaneSkyNet.Visible = true;
             myCustomTaskPaneSkyNet.VisibleChanged += new EventHandler(myCustomTaskPaneSkyNet_VisibleChanged);
@@ -101,27 +104,33 @@ namespace ExcelAddInExpBDTP {
         #endregion
 
         //Méthode pour empêcher le redimensionnement
-        //private void Control_SizeChanged(object sender, EventArgs e) {
+        private void Control_SizeChanged(object sender, EventArgs e) {
 
-        //    var userControl = sender as System.Windows.Forms.UserControl;
+            var userControl = sender as System.Windows.Forms.UserControl;
 
-        //    if (userControl.Height > wpfPaneHeight && userControl.Width > wpfPaneWidth) {
-        //        Globals.ThisAddIn.Application.Cursor = Microsoft.Office.Interop.Excel.XlMousePointer.xlWait;
-        //        Globals.ThisAddIn.Application.SendKeys("{ESC}", true);
-        //        userControl.Height = wpfPaneHeight;
-        //        userControl.Width = wpfPaneWidth;
-        //        Globals.ThisAddIn.Application.Cursor = Microsoft.Office.Interop.Excel.XlMousePointer.xlDefault;
-        //    } else if (userControl.Height > wpfPaneHeight) {
-        //        Globals.ThisAddIn.Application.Cursor = Microsoft.Office.Interop.Excel.XlMousePointer.xlWait;
-        //        Globals.ThisAddIn.Application.SendKeys("{ESC}", true);
-        //        userControl.Height = wpfPaneHeight;
-        //        Globals.ThisAddIn.Application.Cursor = Microsoft.Office.Interop.Excel.XlMousePointer.xlDefault;
-        //    } else if (userControl.Width > wpfPaneWidth) {
-        //        Globals.ThisAddIn.Application.Cursor = Microsoft.Office.Interop.Excel.XlMousePointer.xlWait;
-        //        Globals.ThisAddIn.Application.SendKeys("{ESC}", true);
-        //        userControl.Width = wpfPaneWidth;
-        //        Globals.ThisAddIn.Application.Cursor = Microsoft.Office.Interop.Excel.XlMousePointer.xlDefault;
-        //    }
-        //}
+            if (userControl.Height + 45 > wpfPaneHeight && userControl.Width + 15 > wpfPaneWidth) {
+                Globals.ThisAddIn.Application.Cursor = Microsoft.Office.Interop.Excel.XlMousePointer.xlWait;
+                SendKeys.Send("{ESC}");
+
+                Globals.ThisAddIn.TaskPaneSkyNet.Height = wpfPaneHeight;
+                Globals.ThisAddIn.TaskPaneSkyNet.Width = wpfPaneWidth;
+
+                Globals.ThisAddIn.Application.Cursor = Microsoft.Office.Interop.Excel.XlMousePointer.xlDefault;
+            } else if (userControl.Height + 45 > wpfPaneHeight) {
+                Globals.ThisAddIn.Application.Cursor = Microsoft.Office.Interop.Excel.XlMousePointer.xlWait;
+                SendKeys.Send("{ESC}");
+
+                Globals.ThisAddIn.TaskPaneSkyNet.Height = wpfPaneHeight;
+
+                Globals.ThisAddIn.Application.Cursor = Microsoft.Office.Interop.Excel.XlMousePointer.xlDefault;
+            } else if (userControl.Width + 15 > wpfPaneWidth) {
+                Globals.ThisAddIn.Application.Cursor = Microsoft.Office.Interop.Excel.XlMousePointer.xlWait;
+                SendKeys.Send("{ESC}");
+
+                Globals.ThisAddIn.TaskPaneSkyNet.Width = wpfPaneWidth;
+
+                Globals.ThisAddIn.Application.Cursor = Microsoft.Office.Interop.Excel.XlMousePointer.xlDefault;
+            }
+        }
     }
 }

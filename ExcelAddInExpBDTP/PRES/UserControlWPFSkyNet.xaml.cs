@@ -1,4 +1,4 @@
-﻿using ExcelAddInExpBDTP.DAL;
+﻿//using ExcelAddInExpBDTP.DAL;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
@@ -22,7 +22,6 @@ namespace ExcelAddInExpBDTP.PRES {
     /// </summary>
     public partial class UserControlWPFSkyNet : UserControl {
 
-        private SkyNetExoEntities db = new SkyNetExoEntities();
 
         // SqlConnection connexion;
         // string chaineDeConnexion = "Data Source=ServeurSQL;Initial Catalog = SkyNet;User Id = TEST;Password=AAAaaa111";
@@ -35,25 +34,23 @@ namespace ExcelAddInExpBDTP.PRES {
 
             Globals.ThisAddIn.Application.Cursor = Microsoft.Office.Interop.Excel.XlMousePointer.xlWait;
 
-            var lstEmpl = db.employe.ToList();
-            this.listBoxEmployes.ItemsSource = lstEmpl; // les champs affichés définis dans XAML
+            //var items = new List<Employe>();
+
+            //  items.Add(new Employe() { id = 1, id_departement = 45, nom = "blah" });
+            //  items.Add(new Employe() { id = 2, id_departement = 155, nom = "hell" });
+            //  items.Add(new Employe() { id = 3, id_departement = 195, nom = "what" });
 
             Globals.ThisAddIn.Application.Cursor = Microsoft.Office.Interop.Excel.XlMousePointer.xlDefault;
 
             // Pour une liste stubbé AVANT création (testing de la présentatiON)
-            /* var items = new List<Employe>();
 
-              items.Add(new Employe() { id = 1, id_departement = 45, nom = "blah" });
-              items.Add(new Employe() { id = 2, id_departement = 155, nom = "hell" });
-              items.Add(new Employe() { id = 3, id_departement = 195, nom = "what" });
-            */
         }
 
         private void lblMAJ_Unloaded(object sender, RoutedEventArgs e) {
             //déconnecté la BD
             //      connexion.Close();
 
-            db = null;
+            //db = null;
         }
 
         private void lblMAJ_Loaded(object sender, RoutedEventArgs e) {
@@ -63,71 +60,127 @@ namespace ExcelAddInExpBDTP.PRES {
 
         }
 
+        private void listBoxEmployes_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+
+        }
         private void buttonMAJEmploye_Click(object sender, RoutedEventArgs e) {
-            lblMAJ.Content = "";
-
-            // VALIDATION
-            if (lblIDdepSelectionne.Content.ToString() == "" || lblIDdepSelectionne.Content.ToString() == "-") { // SI ID_DEPARTEMENT EST PRÉSENT
-                MessageBox.Show("Erreur. Le ID département n'existe pas.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            if (txtNomDepartement.Text.Trim() == "") { // SI NOM DEP EST SAISIE
-                // Style et message d'erreur
-                txtNomDepartement.Background = System.Windows.Media.Brushes.Red;
-                MessageBox.Show("Veuillez saisir un nom de département.", "Erreur d'entrée", MessageBoxButton.OK, MessageBoxImage.Error);
-                txtNomDepartement.Background = System.Windows.Media.Brushes.White;
-                txtNomDepartement.Text = "";
-                lblMAJ.Content = "Veuillez saisir un nom de département.";
-                return;
-            }
-            if (txtVille.Text.Trim() == "") { // SI VILLE DEP EST SAISIE
-                // Style et message d'erreur
-                txtVille.Background = System.Windows.Media.Brushes.Red;
-                MessageBox.Show("Veuillez saisir un nom de ville pour ce département.", "Erreur d'entrée", MessageBoxButton.OK, MessageBoxImage.Error);
-                txtVille.Background = System.Windows.Media.Brushes.White;
-                txtVille.Text = "";
-                lblMAJ.Content = "Veuillez saisir un nom de ville pour ce département.";
-                return;
-            }
-            int idDep; // VÉRIFIER SI LE LABEL CONTIENT UN ID DEP.
-            if (!int.TryParse(lblIDdepSelectionne.Content.ToString().Trim(), out idDep)) {
-                return;
-            }
-            var dep = db.departement.Find(idDep);
-
-            // FIN VALIDATION
-            try {
-                int nbRecords = 0;
-                if (dep != null) {
-                    var departSaisie = new departement { id = idDep, nom = txtNomDepartement.Text.Trim(), ville = txtVille.Text.Trim() };
-                    db.Entry(dep).CurrentValues.SetValues(departSaisie);
-                    db.Entry(dep).State = System.Data.Entity.EntityState.Modified;
-                    nbRecords = db.SaveChanges();
-                }
-
-                if (nbRecords != 0) {
-                    this.buttonAffEmployesDsList_Click(sender, e); //Actualiser
-                    lblMAJ.Content = "Mise à jour réussi!";
-                }
-            } catch (RetryLimitExceededException) {
-
-                lblMAJ.Content = "Erreur avec la BD. Contacter votre administrateur.";
-            }
 
         }
 
-        private void listBoxEmployes_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            var buff = sender as ListBox;
-            var sel = (employe)buff.SelectedItem;
+        private void SelectNomOuVille(object sender, RoutedEventArgs e) {
 
-            if (sel != null)
-                lblIDdepSelectionne.Content = (sel.id_departement > 0) ? sel.id_departement.ToString() : "";
-            txtVille.Text = (sel.id_departement > 0) ? sel.departement.ville.ToString() : "";
-            txtNomDepartement.Text = (sel.id_departement > 0) ? sel.departement.nom.ToString() : "";
         }
     }
 }
 
+/*
+public partial class UserControlWPFSkyNet : UserControl {
+
+    private SkyNetExoEntities db = new SkyNetExoEntities();
+
+    // SqlConnection connexion;
+    // string chaineDeConnexion = "Data Source=ServeurSQL;Initial Catalog = SkyNet;User Id = TEST;Password=AAAaaa111";
+
+    public UserControlWPFSkyNet() {
+        InitializeComponent();
+    }
+
+    private void buttonAffEmployesDsList_Click(object sender, RoutedEventArgs e) {
+
+        Globals.ThisAddIn.Application.Cursor = Microsoft.Office.Interop.Excel.XlMousePointer.xlWait;
+
+        var lstEmpl = db.employe.ToList();
+        this.listBoxEmployes.ItemsSource = lstEmpl; // les champs affichés définis dans XAML
+
+        Globals.ThisAddIn.Application.Cursor = Microsoft.Office.Interop.Excel.XlMousePointer.xlDefault;
+
+        // Pour une liste stubbé AVANT création (testing de la présentatiON)
+        ///* var items = new List<Employe>();
+
+        //  items.Add(new Employe() { id = 1, id_departement = 45, nom = "blah" });
+        //  items.Add(new Employe() { id = 2, id_departement = 155, nom = "hell" });
+        //  items.Add(new Employe() { id = 3, id_departement = 195, nom = "what" });
+        //
+    }
+
+    private void lblMAJ_Unloaded(object sender, RoutedEventArgs e) {
+        //déconnecté la BD
+        //      connexion.Close();
+
+        db = null;
+    }
+
+    private void lblMAJ_Loaded(object sender, RoutedEventArgs e) {
+        //connecté la bd
+        //          connexion = new SqlConnection(chaineDeConnexion);
+        //         connexion.Open();
+
+    }
+
+    private void buttonMAJEmploye_Click(object sender, RoutedEventArgs e) {
+        lblMAJ.Content = "";
+
+        // VALIDATION
+        if (lblIDdepSelectionne.Content.ToString() == "" || lblIDdepSelectionne.Content.ToString() == "-") { // SI ID_DEPARTEMENT EST PRÉSENT
+            MessageBox.Show("Erreur. Le ID département n'existe pas.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
+        if (txtNomDepartement.Text.Trim() == "") { // SI NOM DEP EST SAISIE
+                                                   // Style et message d'erreur
+            txtNomDepartement.Background = System.Windows.Media.Brushes.Red;
+            MessageBox.Show("Veuillez saisir un nom de département.", "Erreur d'entrée", MessageBoxButton.OK, MessageBoxImage.Error);
+            txtNomDepartement.Background = System.Windows.Media.Brushes.White;
+            txtNomDepartement.Text = "";
+            lblMAJ.Content = "Veuillez saisir un nom de département.";
+            return;
+        }
+        if (txtVille.Text.Trim() == "") { // SI VILLE DEP EST SAISIE
+                                          // Style et message d'erreur
+            txtVille.Background = System.Windows.Media.Brushes.Red;
+            MessageBox.Show("Veuillez saisir un nom de ville pour ce département.", "Erreur d'entrée", MessageBoxButton.OK, MessageBoxImage.Error);
+            txtVille.Background = System.Windows.Media.Brushes.White;
+            txtVille.Text = "";
+            lblMAJ.Content = "Veuillez saisir un nom de ville pour ce département.";
+            return;
+        }
+        int idDep; // VÉRIFIER SI LE LABEL CONTIENT UN ID DEP.
+        if (!int.TryParse(lblIDdepSelectionne.Content.ToString().Trim(), out idDep)) {
+            return;
+        }
+        var dep = db.departement.Find(idDep);
+
+        // FIN VALIDATION
+        try {
+            int nbRecords = 0;
+            if (dep != null) {
+                var departSaisie = new departement { id = idDep, nom = txtNomDepartement.Text.Trim(), ville = txtVille.Text.Trim() };
+                db.Entry(dep).CurrentValues.SetValues(departSaisie);
+                db.Entry(dep).State = System.Data.Entity.EntityState.Modified;
+                nbRecords = db.SaveChanges();
+            }
+
+            if (nbRecords != 0) {
+                this.buttonAffEmployesDsList_Click(sender, e); //Actualiser
+                lblMAJ.Content = "Mise à jour réussi!";
+            }
+        } catch (RetryLimitExceededException) {
+
+            lblMAJ.Content = "Erreur avec la BD. Contacter votre administrateur.";
+        }
+
+    }
+
+    private void listBoxEmployes_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        var buff = sender as ListBox;
+        var sel = (employe)buff.SelectedItem;
+
+        if (sel != null)
+            lblIDdepSelectionne.Content = (sel.id_departement > 0) ? sel.id_departement.ToString() : "";
+        txtVille.Text = (sel.id_departement > 0) ? sel.departement.ville.ToString() : "";
+        txtNomDepartement.Text = (sel.id_departement > 0) ? sel.departement.nom.ToString() : "";
+    }
+}
+*/
 
 
 

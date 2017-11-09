@@ -228,7 +228,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="ExcelAddInExpBD_TemporaryKey.pfx" />
+    <None Include="ExcelAddInExpBDTP_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -270,10 +270,13 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ExcelAddInExpBD_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>ExcelAddInExpBDTP_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>25C798A1F74E0274913615200C5500F2ADFCFBB2</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>7886A6910D6833216AF73CDA04C9F4FD4C76C0D9</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
