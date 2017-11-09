@@ -11,6 +11,8 @@ using Microsoft.Win32;
 namespace ExcelAddInExpBDTP {
     // Cette classe contient logique de présentation.
     public partial class ThisAddIn {
+        public static string NameOfAddin = "ExcelAddInExpBDTP";
+
         public PRES.UserControlFMSkyNet myUserControlFromFM;
 
         private Microsoft.Office.Tools.CustomTaskPane myCustomTaskPaneSkyNet; // https://msdn.microsoft.com/en-ca/library/bb772076.aspx https://msdn.microsoft.com/en-ca/library/bb384311.aspx //UserControl2.cs //UserControl1.xaml //// ajouter WPF Usercontrol type WPF, faire du drag and drop avec les outils, générer projet, ajouter usercontrol windows forms, mettre le code pour le taskpane, drag and drop de usercontrol wpf à usercontrol windowsforms
@@ -25,6 +27,17 @@ namespace ExcelAddInExpBDTP {
 
         private int wpfPaneWidth = 780;
         private int wpfPaneHeight = 525;
+
+        // Cette méthode va appeler : ThisAddIn_Shutdown
+        internal void QuitAddIn() {
+            Microsoft.Office.Core.COMAddIns adds = Globals.ThisAddIn.Application.COMAddIns;
+            foreach (Microsoft.Office.Core.COMAddIn addIn in adds) {
+                if (addIn.ProgId == ThisAddIn.NameOfAddin && addIn.Connect) {   // ThisAddIn.NameOfAddin => static string manually definned in ThisAddin cl
+                    addIn.Connect = false;
+                    break;
+                }
+            }
+        }
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e) {
             initSkyNetTP(); // chargement initial de l'utilitaire

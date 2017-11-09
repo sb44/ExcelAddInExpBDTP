@@ -29,9 +29,7 @@ namespace ExcelAddInExpBDTP {
 
             DialogResult dlgResult = System.Windows.Forms.MessageBox.Show("Voulez-vous vraiment fermer l'utilitaire SkyNet?\n\nSélectionner Oui pour confirmer.", "Fermeture de SkyNet", MessageBoxButtons.YesNo);
             if (dlgResult == DialogResult.Yes) {
-                Globals.ThisAddIn.Application.Quit();
-                //Globals.ThisAddIn.ThisAddIn_Shutdown(this, new EventArgs());
-
+                Globals.ThisAddIn.QuitAddIn(); // globabl method defined in THisAddIn cl.
             } else {
                 toggleButtonFermer.Checked = false;
             }
