@@ -35,10 +35,10 @@ namespace ExcelAddInExpBDTP {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManageTaskPaneRibbon));
             this.tab2 = this.Factory.CreateRibbonTab();
             this.group2 = this.Factory.CreateRibbonGroup();
-            this.separator1 = this.Factory.CreateRibbonSeparator();
-            this.separator2 = this.Factory.CreateRibbonSeparator();
             this.toggleButtonLancer = this.Factory.CreateRibbonToggleButton();
+            this.separator1 = this.Factory.CreateRibbonSeparator();
             this.toggleButtonAide = this.Factory.CreateRibbonToggleButton();
+            this.separator2 = this.Factory.CreateRibbonSeparator();
             this.toggleButtonFermer = this.Factory.CreateRibbonToggleButton();
             this.tab2.SuspendLayout();
             this.group2.SuspendLayout();
@@ -60,14 +60,6 @@ namespace ExcelAddInExpBDTP {
             this.group2.Label = "Utilitaire SkyNet";
             this.group2.Name = "group2";
             // 
-            // separator1
-            // 
-            this.separator1.Name = "separator1";
-            // 
-            // separator2
-            // 
-            this.separator2.Name = "separator2";
-            // 
             // toggleButtonLancer
             // 
             this.toggleButtonLancer.Checked = true;
@@ -81,6 +73,10 @@ namespace ExcelAddInExpBDTP {
             this.toggleButtonLancer.SuperTip = "Cliquer sur le bouton de l\'utilitaire pour lancer ou fermer SkyNet";
             this.toggleButtonLancer.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButtonLancer_Click);
             // 
+            // separator1
+            // 
+            this.separator1.Name = "separator1";
+            // 
             // toggleButtonAide
             // 
             this.toggleButtonAide.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -91,6 +87,10 @@ namespace ExcelAddInExpBDTP {
             this.toggleButtonAide.ShowImage = true;
             this.toggleButtonAide.SuperTip = "Clicker pour obtenir de l\'information à propos de l\'utilitaire";
             this.toggleButtonAide.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButtonAide_Click);
+            // 
+            // separator2
+            // 
+            this.separator2.Name = "separator2";
             // 
             // toggleButtonFermer
             // 

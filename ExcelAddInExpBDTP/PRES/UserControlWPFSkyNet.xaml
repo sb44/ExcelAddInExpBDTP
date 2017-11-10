@@ -101,28 +101,26 @@
                 </Label.Style>
             </Label>
 
-            <Button x:Name="buttonAffEmployesDsList" Grid.Column="1" Grid.Row="6" Content="SELECT" HorizontalAlignment="Left" VerticalAlignment="Center" Width="146" Height="25" Click="buttonAffEmployesDsList_Click" Margin="67,38,0,41"/>
+            <Button x:Name="buttonAffEmployesDsList" Grid.Column="1" Grid.Row="6" Content="SELECT" HorizontalAlignment="Left" VerticalAlignment="Center" Width="146" Height="25" Click="buttonAffEmployesDsList_Click" Margin="72,21,0,58"/>
 
-            <StackPanel Grid.Column="1" Grid.Row="4"  Grid.RowSpan="3" Margin="5,70,200,34">
-                <RadioButton x:Name="rb1" Checked="SelectNomOuVille" Content="Nom"/>
-                <RadioButton x:Name="rb2" Checked="SelectNomOuVille" Content="Ville"/>
+            <StackPanel Grid.Column="1" Grid.Row="4" Margin="5,70,229,54" Grid.RowSpan="2">
+                <RadioButton x:Name="rbNom" IsChecked="True" Checked="SelectNomOuVille" Content="Nom"/>
+                <RadioButton x:Name="rbVille" Checked="SelectNomOuVille" Content="Ville"/>
             </StackPanel>
 
 
             <!-- <ListBox x:Name="listBoxEmployes" HorizontalAlignment="Left" Height="197" Grid.RowSpan="4" VerticalAlignment="Top" Width="538" Grid.Column="1"  Grid.Row="3" Margin="5,0,0,0" Grid.ColumnSpan="2" /> -->
-            <ListBox x:Name="listBoxEmployes" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Grid.RowSpan="3" Width="291"  Grid.Row="4" Margin="72,36,0,84" SelectionChanged="listBoxEmployes_SelectionChanged" Grid.Column="1" Grid.ColumnSpan="2">
+            <ListBox x:Name="listBoxDep" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Grid.RowSpan="2" Width="368"  Grid.Row="4" Margin="59,35,0,0" SelectionChanged="listBoxEmployes_SelectionChanged" Grid.Column="1" Grid.ColumnSpan="2">
                 <ListBox.Template >
                     <ControlTemplate >
                         <DockPanel LastChildFill="True">
                             <Grid DockPanel.Dock="Top" Height="25">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
-                                    <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Content="ID Employé"/>
-                                <Label Grid.Column="1" Content="ID Département"/>
-                                <Label Grid.Column="2" Content="Nom employé"/>
+                                <Label Grid.Column="0" Content="ID Département"/>
+                                <Label Grid.Column="1" Content="{Binding Path=HeaderListBoxDepartement, UpdateSourceTrigger=PropertyChanged}"/>
                             </Grid>
                             <ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" BorderBrush="Transparent" BorderThickness="0" >
                                 <ItemsPresenter />
@@ -132,22 +130,21 @@
                     </ControlTemplate>
                 </ListBox.Template>
                 <ListBox.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate >
                         <Grid Margin="0,2">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100" />
                                 <ColumnDefinition Width="100" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="{Binding id}" />
-                            <TextBlock Grid.Column="1" Text="{Binding id_departement}" />
-                            <TextBlock Grid.Column="2" Text="{Binding nom}" />
+                            <TextBlock Grid.Column="1" Text="{Binding nom}" />
+                            <TextBlock Grid.Column="1" Text="{Binding ville}" />
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <Label Content="ID" Grid.Column="2" Grid.Row="4" Height="21" x:Name="lblIDDEP" Background="White" Grid.ColumnSpan="1" Margin="160,54,7,29" Foreground="#FF1E9BD9" FontSize="10" FontWeight="Bold" />
+            <Label Content="ID" Grid.Column="2" Grid.Row="4" Height="21" x:Name="lblIDDEP" Background="White" Grid.ColumnSpan="1" Margin="160,46,7,37" Foreground="#FF1E9BD9" FontSize="10" FontWeight="Bold" />
 
             <Label Content="Connexion" Background="#FFE0E0E0" Grid.Column="1" Grid.Row="1" x:Name="lblConn" VerticalContentAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="7,0" FontSize="11.5" Foreground="#FF5C5C66" Grid.ColumnSpan="3" />
 
@@ -166,14 +163,16 @@
 
             <Label Content="" Grid.Column="2" Grid.Row="6" x:Name="lblMAJ" VerticalContentAlignment="Bottom" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Grid.ColumnSpan="2" Background="White"  FontSize="13.5" Foreground="#FF5C5C66" Unloaded="lblMAJ_Unloaded" Loaded="lblMAJ_Loaded" Margin="0,38,50,38" />
 
-            <Button x:Name="buttonMAJDepartement" Grid.Column="2" Grid.Row="6" Content="INSERT" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="156" Height="25" Margin="160,0,0,46" Click="buttonMAJEmploye_Click" Grid.ColumnSpan="2"/>
+            <Button x:Name="buttonInsertDep" Grid.Column="2" Grid.Row="6" Content="INSERT" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="156" Height="25" Margin="160,0,0,58" Click="buttonInsertDep_Click" Grid.ColumnSpan="2"/>
 
-            <Label Content="Ville " Grid.Column="2" Grid.Row="5" Height="21" x:Name="lblVilleDep" Background="White" Grid.ColumnSpan="1" Margin="160,13,7,70" Foreground="#FF1E9BD9" FontSize="10" FontWeight="Bold" />
-            <TextBox x:Name="txtVille" Template="{StaticResource TextBoxBaseControlTemplate}" HorizontalAlignment="Stretch" Height="26" Grid.Column="2" Grid.Row="5" Margin="160,42,132,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="auto" Text="" TextAlignment="Left" Foreground="#FF5C5C66" Grid.ColumnSpan="2"/>
-            <Label Content="Nom " Grid.Column="2" Grid.Row="5" x:Name="lblNomDep" Background="White" Grid.ColumnSpan="1" Margin="159,75,8,103" Foreground="#FF1E9BD9" FontSize="10" FontWeight="Bold" Grid.RowSpan="2" />
-            <TextBox x:Name="txtNomDepartement" Template="{StaticResource TextBoxBaseControlTemplate}" HorizontalAlignment="Stretch" Height="26" Grid.Column="2" Grid.Row="6" Margin="160,2,132,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="auto" Text="" TextAlignment="Left" Foreground="#FF5C5C66" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2"/>
-            <Label x:Name="lblIDdepSelectionne" Content="-" FontWeight="Bold" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="4" VerticalAlignment="Top" Foreground="#FF009CE7" Margin="160,83,0,0" Grid.RowSpan="2" />
-            <Rectangle HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="708" Grid.Row="6" Margin="0,63,0,0" Grid.ColumnSpan="3" Grid.Column="1">
+            <Label Content="Ville " Grid.Column="2" Grid.Row="5" Height="21" x:Name="lblVilleDep" Background="White" Grid.ColumnSpan="1" Margin="160,57,7,26" Foreground="#FF1E9BD9" FontSize="10" FontWeight="Bold" />
+            <TextBox x:Name="txtVille" Template="{StaticResource TextBoxBaseControlTemplate}" HorizontalAlignment="Stretch" Height="26" Grid.Column="2" Grid.Row="5" Margin="160,78,132,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="auto" Text="" TextAlignment="Left" Foreground="#FF5C5C66" Grid.ColumnSpan="2"/>
+            <Label Content="Nom " Grid.Column="2" Grid.Row="5" x:Name="lblNomDep" Background="White" Grid.ColumnSpan="1" Margin="160,0,7,74" Foreground="#FF1E9BD9" FontSize="10" FontWeight="Bold" />
+            <TextBox x:Name="txtNomDepartement" Template="{StaticResource TextBoxBaseControlTemplate}" HorizontalAlignment="Stretch" Height="26" Grid.Column="2" Grid.Row="5" Margin="160,21,132,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="auto" Text="" TextAlignment="Left" Foreground="#FF5C5C66" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="txtID" Template="{StaticResource TextBoxBaseControlTemplate}" HorizontalAlignment="Stretch" Height="26" Grid.Column="2" Grid.Row="4" Margin="160,70,132,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="auto" Text="" TextAlignment="Left" Foreground="#FF5C5C66" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2"/>
+
+
+            <Rectangle HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="662" Grid.Row="6" Margin="46,63,0,0" Grid.ColumnSpan="3" Grid.Column="1">
                 <Rectangle.Fill>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                         <GradientStop Color="#FFF1F1F1" Offset="0"/>
@@ -195,6 +194,22 @@
             <Button x:Name="buttonConn" Grid.Column="1" Grid.Row="3" Content="Connexion" HorizontalAlignment="Left" VerticalAlignment="Center" Width="146" Height="25" Margin="122,69,0,10" Click="buttonConn_Click"/>
 
             <Button x:Name="buttonDeConn" Grid.Column="2" Grid.Row="3" Content="Déconnexion" HorizontalAlignment="Left" VerticalAlignment="Center" Width="146" Height="25" Margin="170,69,0,10" Grid.ColumnSpan="2" IsEnabled="False" Click="buttonDeConn_Click"/>
+            <Rectangle HorizontalAlignment="Left" VerticalAlignment="Stretch" Grid.RowSpan="2" Width="40" Grid.Column="1" Grid.Row="5" Margin="100,27,0,85" RenderTransformOrigin="-0.675,0.724">
+                <Rectangle.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="180.013"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Rectangle.RenderTransform>
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,1" EndPoint="1,1">
+                        <GradientStop Color="#FFF1F1F1" Offset="0"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
 
 
         </Grid>

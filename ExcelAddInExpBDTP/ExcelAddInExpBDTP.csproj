@@ -192,12 +192,15 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="BIZ\Departement.cs" />
+    <Compile Include="DAL\Departements.cs" />
     <Compile Include="ManageTaskPaneRibbon.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ManageTaskPaneRibbon.Designer.cs">
       <DependentUpon>ManageTaskPaneRibbon.cs</DependentUpon>
     </Compile>
+    <Compile Include="PRES\DepartementViewModel.cs" />
     <Compile Include="PRES\UserControlFMSkyNet.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -251,7 +254,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppData\" />
-    <Folder Include="DAL\" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="PRES\UserControlWPFSkyNet.xaml">
@@ -270,10 +272,11 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ExcelAddInExpBDTP_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>7886A6910D6833216AF73CDA04C9F4FD4C76C0D9</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>25C798A1F74E0274913615200C5500F2ADFCFBB2</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

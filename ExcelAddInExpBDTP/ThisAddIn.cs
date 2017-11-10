@@ -29,7 +29,7 @@ namespace ExcelAddInExpBDTP {
         }
 
         private int wpfPaneWidth = 780;
-        //  private int wpfPaneHeight = 525; // À SETTER UNE FOIS CONNECTÉ
+        //  private int wpfPaneHeight = 525; // Set this height on Sql connection
         private int wpfPaneHeight = SmallPaneHeight;
         public int WpfPaneHeight {
             set {
@@ -88,6 +88,7 @@ namespace ExcelAddInExpBDTP {
 
             //ManageTaskPaneRibbon.rUI.RibbonUI.ActivateTab("TabAddIns");
             Globals.Ribbons.ManageTaskPaneRibbon.RibbonUI.ActivateTab("tab2");
+            
 
         }
 

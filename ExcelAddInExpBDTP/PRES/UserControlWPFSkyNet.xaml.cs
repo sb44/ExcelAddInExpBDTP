@@ -1,4 +1,6 @@
 ﻿//using ExcelAddInExpBDTP.DAL;
+using ExcelAddInExpBDTP.BIZ;
+using ExcelAddInExpBDTP.DAL;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
@@ -25,20 +27,32 @@ namespace ExcelAddInExpBDTP.PRES {
 
         SqlConnection connexion = null;
         string chaineDeConnexion = "";
+        public DepartementViewModel depVM;
 
         public UserControlWPFSkyNet() {
+            depVM = new DepartementViewModel();
+            depVM.HeaderListBoxDepartement = "Nom";
+            this.DataContext = depVM;
+
             InitializeComponent();
+
         }
 
         private void buttonAffEmployesDsList_Click(object sender, RoutedEventArgs e) {
 
+            if (connexion == null)
+                return;
+
             Globals.ThisAddIn.Application.Cursor = Microsoft.Office.Interop.Excel.XlMousePointer.xlWait;
 
-            //var items = new List<Employe>();
+            var lstDep = new Departements(connexion).GetDepartements(rbNom.IsChecked == true);
+            if (lstDep != null) {
+                this.listBoxDep.ItemsSource = lstDep;
+                // changer le nom du header dans la listBox (Nom ou Ville) :
+                this.depVM.HeaderListBoxDepartement = (rbNom.IsChecked == true) ? "Nom" : "Ville";
+            }
 
-            //  items.Add(new Employe() { id = 1, id_departement = 45, nom = "blah" });
-            //  items.Add(new Employe() { id = 2, id_departement = 155, nom = "hell" });
-            //  items.Add(new Employe() { id = 3, id_departement = 195, nom = "what" });
+
 
             Globals.ThisAddIn.Application.Cursor = Microsoft.Office.Interop.Excel.XlMousePointer.xlDefault;
 
@@ -59,12 +73,62 @@ namespace ExcelAddInExpBDTP.PRES {
         private void listBoxEmployes_SelectionChanged(object sender, SelectionChangedEventArgs e) {
 
         }
-        private void buttonMAJEmploye_Click(object sender, RoutedEventArgs e) {
+
+        //Pour insérer un nouveau département dans la table departement
+        private void buttonInsertDep_Click(object sender, RoutedEventArgs e) {
+            //validations.. txtID  txtNomDepartement  txtVille
+            
+            //validation id
+            int idDep = 0;
+            if (txtID.Text.Trim() == "") {
+                txtID.Background = System.Windows.Media.Brushes.Red;
+                MessageBox.Show("Erreur. Le ID doit être saisie.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                txtID.Background = System.Windows.Media.Brushes.White;
+                return;
+            }
+            if ((!int.TryParse(txtID.Text.Trim(), out idDep))) {
+                txtID.Background = System.Windows.Media.Brushes.Red;
+                MessageBox.Show("Erreur. Le ID doit être une valeur numérique.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                txtID.Background = System.Windows.Media.Brushes.White;
+                return;
+            }
+
+            //validation departement
+            if (txtNomDepartement.Text.Trim() == "" || txtNomDepartement.Text.Trim().Length > 15) {
+                txtNomDepartement.Background = System.Windows.Media.Brushes.Red;
+                MessageBox.Show("Erreur. Le nom du département doit être saisie et ce de manière valide. Le nombre de caractères maximales est 15.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                txtNomDepartement.Background = System.Windows.Media.Brushes.White;
+                return;
+            }
+
+            // validation ville
+            if (txtVille.Text.Trim() == "" || txtVille.Text.Trim().Length > 20) {
+                txtVille.Background = System.Windows.Media.Brushes.Red;
+                MessageBox.Show("Erreur. Le nom de la ville doit être saisie et ce de manière valide. Le nombre de caractères maximales est 20.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                txtVille.Background = System.Windows.Media.Brushes.White;
+                return;
+            }
+
+
+            //insertion bd:
+            int res = new Departements(connexion).Add(new Departement { id = idDep,
+                                                                        nom = txtNomDepartement.Text.Trim(),
+                                                                        ville = txtVille.Text.Trim() });
+            if (res > 0) {
+                //succès, donc on actualise:
+                this.buttonAffEmployesDsList_Click(sender, e);
+                this.txtID.Text = "";
+                this.txtNomDepartement.Text = "";
+                this.txtVille.Text = "";
+            } else {
+                MessageBox.Show("Erreur. L'insertion n'a pas été un succès. Veuillez corriger votre ID; cette valeur doit être unique.", "Erreur");
+            }
 
         }
 
         private void SelectNomOuVille(object sender, RoutedEventArgs e) { // Bouton radio
-
+            if (listBoxDep != null && !listBoxDep.HasItems)
+                this.depVM.HeaderListBoxDepartement = (rbNom.IsChecked == true) ? "Nom" : "Ville";
         }
 
         private void buttonConn_Click(object sender, RoutedEventArgs e) {
@@ -83,14 +147,14 @@ namespace ExcelAddInExpBDTP.PRES {
             }
             if (txtUser.Text.Trim() == "") {
                 txtUser.Background = System.Windows.Media.Brushes.Red;
-                MessageBox.Show("Erreur. La BD doit être saisie.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Erreur. L'utilisateur doit être saisie.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
                 txtUser.Background = System.Windows.Media.Brushes.White;
                 return;
             }
 
             // chaineDeConnexion = "Data Source=ServeurSQL;Initial Catalog = SkyNet;User Id = TEST;Password=AAAaaa111"; 
 
-            //CHAINE POUR COLLÈGE:
+            //CHAINE POUR COLLÈGE (et domicile.. il faut configurer sql avec SQLServerManager13.msc avec Windows10 pour écouter sur le port TCP 1433 https://docs.microsoft.com/en-us/sql/database-engine/configure-windows/troubleshoot-connecting-to-the-sql-server-database-engine):
             chaineDeConnexion = @"Data Source=" + txtAdresseIP.Text.Trim() + ",1433" + 
                                 ";Initial Catalog=" + txtBD.Text.Trim() + 
                                 ";User Id=" + txtUser.Text.Trim() + 
@@ -119,6 +183,10 @@ namespace ExcelAddInExpBDTP.PRES {
 
             Globals.ThisAddIn.QuitAddIn();
         }
+
+
+
+
 
     }
 }
